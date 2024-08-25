@@ -1,5 +1,5 @@
 from function import *
-import datetime
+from datetime import datetime
 
 # HH:MM:SS 24小时制时间
 _t = "06:00:00"  # 示例时间，可以根据实际情况修改
@@ -17,6 +17,7 @@ def when_start():
 def when_update():
     global _okite
     # 获取当前时间
+    current_time = datetime.now()
     current_hour, current_minute, current_second = current_time.hour, current_time.minute, current_time.second
     current_time_only = datetime.now().replace(year=1900, month=1, day=1, hour=current_hour, minute=current_minute, second=current_second)
     # 判断当前时间是否超过
