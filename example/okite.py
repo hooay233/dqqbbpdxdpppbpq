@@ -8,14 +8,15 @@ _t = "06:00:00"  # 示例时间，可以根据实际情况修改
 _target_time = datetime.strptime(_t, "%H:%M:%S")
 
 _okite = True
+_ohayou = False
 
 
 def when_start():
     send("dqqbbpdxdpppbpq 已启动")
-    send("该示例将在相应时间启动俊达萌闹钟")
+    send("该示例将在相应时间启动叫醒服务")
 
 def when_update():
-    global _okite
+    global _okite, _ohayou
     # 获取当前时间
     current_time = datetime.now()
     current_hour, current_minute, current_second = current_time.hour, current_time.minute, current_time.second
@@ -23,15 +24,19 @@ def when_update():
     # 判断当前时间是否超过
     if current_time_only > _target_time and _okite:
         send("起きて！")
+        if not _ohayou:
+            _ohayou = True
     elif current_time_only < _target_time and not _okite:
         _okite = True
 
 
+
 def when_get_message(inner):
-    global _okite
-    if _okite:
+    global _okite, _ohayou
+    if _okite and _ohayou:
         send("おはよう！")
         _okite = False
+        _ohayou = False
 
 def when_stop():
     send("dqqbbpdxdpppbpq 已关闭")
