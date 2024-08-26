@@ -1,15 +1,21 @@
 from function import *
-from datetime import datetime
+from datetime import datetime, timedelta
 
-# HH:MM:SS 24小时制时间
-_t = "06:00:00"  # 示例时间，可以根据实际情况修改
+# 假设的固定时间字符串，例如 "06:00:00"
+_t = "06:00:00"
+# 设为 1 为明天
+_tomorrow = 0
 
-# 将字符串时间转换为datetime对象
-_target_time = datetime.strptime(_t, "%H:%M:%S")
+# 解析时间字符串
+_time = datetime.strptime(_t, "%H:%M:%S").time()
+# 记录当前日期和时间
+_current_datetime = datetime.now()
+# 计算日期
+_day = _current_datetime.date() + timedelta(days=_tomorrow)
+_day_time = datetime.combine(_day, _time)
 
 _okite_need = True
 _okite_number = 0
-
 
 def when_start():
     send("dqqbbpdxdpppbpq 已启动")
@@ -19,22 +25,22 @@ def when_update():
     global _okite_need, _okite_number
     # 获取当前时间
     current_time = datetime.now()
-    current_hour, current_minute, current_second = current_time.hour, current_time.minute, current_time.second
-    current_time_only = datetime.now().replace(year=1900, month=1, day=1, hour=current_hour, minute=current_minute, second=current_second)
     # 判断当前时间是否超过
-    if current_time_only > _target_time and _okite_need:
+    if current_time > _day_time and _okite_need:
         send("起きて！")
-        if not _okite_number < 2:
+        if _okite_number < 2:
             _okite_number += 1
-    elif current_time_only < _target_time and not _okite_need:
+    elif current_time < _day_time and not _okite_need:
         _okite_need = True
 
 
 
 def when_get_message(inner):
-    global _okite_need, _okite_number
+    global _okite_need, _okite_number, _tomorrow
+    print(_okite_need, _okite_number)
     if _okite_need and _okite_number >= 2:
-        send("おはよう！")
+        send("おはよ！")
+        _tomorrow += 1
         _okite_need = False
         _okite_number = 0
 

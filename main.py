@@ -39,7 +39,7 @@ try:
         # 检查屏幕区域是否发生变更
         if has_changed(previous_screen, current_screen):
             print("屏幕区域已变更。")
-            os.system(f"xdotool mousemove {messageX} {messageY} click 3 sleep 0.05 mousemove {copyX} {copyY} click 1") # copy
+            os.system(f"xdotool mousemove {messageX} {messageY} click 3 sleep 0.05 mousemove {copyX} {copyY} click 1 mousemove {inputX} {inputY}") #copy
             when_get_message(clip.paste())
 
             time.sleep(0.1)
